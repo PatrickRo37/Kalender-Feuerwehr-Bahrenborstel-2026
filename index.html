@@ -14,56 +14,96 @@
     }
     h1 {
       font-size: 1.4rem;
-      margin-bottom: 1rem;
     }
-    a.button {
+    a.button, button.copy {
       display: inline-block;
+      margin-top: 1rem;
       padding: 1rem 1.5rem;
       background: #1a73e8;
       color: white;
-      text-decoration: none;
+      border: none;
       border-radius: 8px;
       font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    button.copy {
+      background: #555;
     }
     .hint {
       margin-top: 1.5rem;
       font-size: 0.9rem;
       color: #555;
     }
+    .fallback {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #ddd;
+    }
+    .linkbox {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      word-break: break-all;
+      background: #eee;
+      padding: 0.75rem;
+      border-radius: 6px;
+    }
   </style>
 
   <script>
+    const ICAL_URL =
+      "https://calendar.google.com/calendar/ical/1dd51ae8546b9418720593c7a50e85780eea9a95bed79dc274a4f0dbab4f7c03%40group.calendar.google.com/public/basic.ics";
+
+    const IOS_LINK =
+      "webcal://calendar.google.com/calendar/ical/1dd51ae8546b9418720593c7a50e85780eea9a95bed79dc274a4f0dbab4f7c03%40group.calendar.google.com/public/basic.ics";
+
+    const ANDROID_LINK =
+      "https://calendar.google.com/calendar/r?cid=" + encodeURIComponent(ICAL_URL);
+
     document.addEventListener("DOMContentLoaded", function () {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const link = document.getElementById("calendarLink");
 
       if (isIOS) {
-        link.href =
-          "webcal://calendar.google.com/calendar/ical/1dd51ae8546b9418720593c7a50e85780eea9a95bed79dc274a4f0dbab4f7c03%40group.calendar.google.com/public/basic.ics";
+        link.href = IOS_LINK;
         link.textContent = "Kalender abonnieren (iPhone)";
       } else {
-        link.href =
-          "https://calendar.google.com/calendar/r?cid=https://calendar.google.com/calendar/ical/1dd51ae8546b9418720593c7a50e85780eea9a95bed79dc274a4f0dbab4f7c03%40group.calendar.google.com/public/basic.ics";
+        link.href = ANDROID_LINK;
         link.textContent = "Kalender abonnieren";
       }
     });
+
+    function copyLink() {
+      navigator.clipboard.writeText(ICAL_URL).then(() => {
+        alert("Kalender-Link wurde in die Zwischenablage kopiert");
+      });
+    }
   </script>
 </head>
 
 <body>
 
-  <h1>📅 Kalender Feuerwehr Bahrenborstel 2026 abonnieren</h1>
+  <h1>📅 Kalender abonnieren</h1>
 
   <a id="calendarLink" class="button" href="#">
     Kalender abonnieren
   </a>
 
   <div class="hint">
-    <p><strong>iPhone:</strong> Es sollte sich die iPhone Kalender App, mit der "Kalenderabonnement hinzufügen" Funktion, öffnen</p>
+    <p><strong>iPhone:</strong> Tippen → Kalender-Abo</p>
     <p><strong>Android:</strong> Öffnet Google Kalender im Browser</p>
-    <p><strong>Falls es nicht funktioniert:</strong> Hier der Original-Adresse: https://calendar.google.com/calendar/ical/1dd51ae8546b9418720593c7a50e85780eea9a95bed79dc274a4f0dbab4f7c03%40group.calendar.google.com/public/basic.ics </p>
+  </div>
+
+  <div class="fallback">
+    <p><strong>Funktioniert es nicht?</strong></p>
+    <p>Kopiere diesen Link und füge ihn manuell als Kalender-Abo hinzu:</p>
+
+    <div class="linkbox">
+      https://calendar.google.com/calendar/ical/1dd51ae8546b9418720593c7a50e85780eea9a95bed79dc274a4f0dbab4f7c03%40group.calendar.google.com/public/basic.ics
+    </div>
+
+    <button class="copy" onclick="copyLink()">Link kopieren</button>
   </div>
 
 </body>
 </html>
-
